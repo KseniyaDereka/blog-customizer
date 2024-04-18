@@ -9,10 +9,13 @@ import { defaultArticleState } from './constants/articleProps';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
+import { useState } from 'react';
+
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
+	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<div
 			className={clsx(styles.main)}
@@ -25,7 +28,7 @@ const App = () => {
 					'--bg-color': defaultArticleState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm />
+			<ArticleParamsForm title={'Задайте параметры'} active={isOpen} setIsOpen={setIsOpen} />
 			<Article />
 		</div>
 	);
