@@ -4,7 +4,8 @@ import { Text } from 'components/text';
 import { Select } from 'components/select/Select'
 import { ReactNode } from 'react';
 import { RadioGroup } from 'components/radio-group';
-import { defaultArticleState, fontSizeOptions, AppState, fontFamilyOptions } from 'src/constants/articleProps';
+import { defaultArticleState, fontSizeOptions, AppState, fontFamilyOptions, fontColors, backgroundColors, contentWidthArr } from 'src/constants/articleProps';
+import { Separator } from '../separator';
 
 import styles from './ArticleParamsForm.module.scss';
 import { useLayoutEffect, useState } from 'react';
@@ -35,6 +36,10 @@ export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appSt
 					</Text>
 					<Select title={'Шрифт'} options={fontFamilyOptions} selected={appState.fontFamilyOption} onChange={(fontFamilyOption) => setAppState({ ...appState, fontFamilyOption })} />
 					<RadioGroup title={'Размер шрифта'} options={fontSizeOptions} name={'fontSize'} selected={appState.fontSizeOption} onChange={(fontSizeOption) => setAppState({ ...appState, fontSizeOption })} />
+					<Select title={'Цвет шрифта'} options={fontColors} selected={appState.fontColor} onChange={(fontColor) => setAppState({ ...appState, fontColor })} />
+					<Separator />
+					<Select title={'Цвет фона'} options={backgroundColors} selected={appState.backgroundColor} onChange={(backgroundColor) => setAppState({ ...appState, backgroundColor })} />
+					<Select title={'Ширина контента'} options={contentWidthArr} selected={appState.contentWidth} onChange={(contentWidth) => setAppState({ ...appState, contentWidth })} />
 					<div className={styles.bottomContainer}>
 						{/* {children} */}
 						<Button title='Сбросить' type='reset' />
