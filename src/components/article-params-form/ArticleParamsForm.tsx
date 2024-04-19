@@ -4,7 +4,7 @@ import { Text } from 'components/text';
 import { Select } from 'components/select/Select'
 import { ReactNode } from 'react';
 import { RadioGroup } from 'components/radio-group';
-import { defaultArticleState, fontSizeOptions, AppState } from 'src/constants/articleProps';
+import { defaultArticleState, fontSizeOptions, AppState, fontFamilyOptions } from 'src/constants/articleProps';
 
 import styles from './ArticleParamsForm.module.scss';
 import { useLayoutEffect, useState } from 'react';
@@ -33,7 +33,8 @@ export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appSt
 					<Text as='h1' size={31} weight={800} uppercase dynamicLite>
 						{title}
 					</Text>
-					<RadioGroup title={'Шрифт'} options={fontSizeOptions} name={'fontSize'} selected={appState.fontSizeOption} onChange={(fontSizeOption) => setAppState({ ...appState, fontSizeOption })} />
+					<Select title={'Шрифт'} options={fontFamilyOptions} selected={appState.fontFamilyOption} onChange={(fontFamilyOption) => setAppState({ ...appState, fontFamilyOption })} />
+					<RadioGroup title={'Размер шрифта'} options={fontSizeOptions} name={'fontSize'} selected={appState.fontSizeOption} onChange={(fontSizeOption) => setAppState({ ...appState, fontSizeOption })} />
 					<div className={styles.bottomContainer}>
 						{/* {children} */}
 						<Button title='Сбросить' type='reset' />
