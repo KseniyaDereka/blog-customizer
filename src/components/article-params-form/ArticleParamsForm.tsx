@@ -2,10 +2,11 @@ import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
 import { Text } from 'components/text';
 import { Select } from 'components/select/Select'
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, SyntheticEvent } from 'react';
 import { RadioGroup } from 'components/radio-group';
 import { defaultArticleState, fontSizeOptions, AppState, fontFamilyOptions, fontColors, backgroundColors, contentWidthArr } from 'src/constants/articleProps';
 import { Separator } from '../separator';
+import { clsx } from 'clsx';
 
 import styles from './ArticleParamsForm.module.scss';
 import { useLayoutEffect, useState } from 'react';
@@ -23,27 +24,46 @@ type ArticleParamsProps = {
 
 export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appState }: ArticleParamsProps) => {
 
-	const className = styles.container + (active ? ' ' + styles.container_open : '');
+	const className = clsx(styles.container, active && styles.container_open);
+	const handleClick = (e: SyntheticEvent) => {
+		e.preventDefault();
+		setAppState(appState)
+	};
 
-
+	const [formState, setFormState] = useState(appState);
+	useEffect(() => setFormState(appState), [appState]);
 	return (
 		<>
 			<ArrowButton onClick={() => setIsOpen((previous: boolean) => !previous)} active={active} />
 			<aside className={className} >
 				<form className={styles.form} >
-					<Text as='h1' size={31} weight={800} uppercase dynamicLite>
+					<Text as='h1' size={31} weight={800} uppercase>
 						{title}
 					</Text>
-					<Select title={'Шрифт'} options={fontFamilyOptions} selected={appState.fontFamilyOption} onChange={(fontFamilyOption) => setAppState({ ...appState, fontFamilyOption })} />
-					<RadioGroup title={'Размер шрифта'} options={fontSizeOptions} name={'fontSize'} selected={appState.fontSizeOption} onChange={(fontSizeOption) => setAppState({ ...appState, fontSizeOption })} />
-					<Select title={'Цвет шрифта'} options={fontColors} selected={appState.fontColor} onChange={(fontColor) => setAppState({ ...appState, fontColor })} />
+					<Select title={'Шрифт'}
+						options={fontFamilyOptions}
+						selected={formState.fontFamilyOption}
+						onChange={(fontFamilyOption) => setFormState({ ...formState, fontFamilyOption })} />
+					<RadioGroup title={'Размер шрифта'}
+						options={fontSizeOptions} name={'fontSize'}
+						selected={formState.fontSizeOption}
+						onChange={(fontSizeOption) => setFormState({ ...formState, fontSizeOption })} />
+					<Select title={'Цвет шрифта'}
+						options={fontColors}
+						selected={formState.fontColor}
+						onChange={(fontColor) => setFormState({ ...formState, fontColor })} />
 					<Separator />
-					<Select title={'Цвет фона'} options={backgroundColors} selected={appState.backgroundColor} onChange={(backgroundColor) => setAppState({ ...appState, backgroundColor })} />
-					<Select title={'Ширина контента'} options={contentWidthArr} selected={appState.contentWidth} onChange={(contentWidth) => setAppState({ ...appState, contentWidth })} />
+					<Select title={'Цвет фона'}
+						options={backgroundColors}
+						selected={formState.backgroundColor}
+						onChange={(backgroundColor) => setFormState({ ...formState, backgroundColor })} />
+					<Select title={'Ширина контента'}
+						options={contentWidthArr}
+						selected={formState.contentWidth}
+						onChange={(contentWidth) => setFormState({ ...formState, contentWidth })} />
 					<div className={styles.bottomContainer}>
-						{/* {children} */}
 						<Button title='Сбросить' type='reset' />
-						<Button title='Применить' type='submit' />
+						<Button title='Применить' type='submit' onClick={() => setAppState(formState)} />
 					</div>
 				</form>
 			</aside>
