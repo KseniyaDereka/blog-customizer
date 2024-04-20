@@ -25,10 +25,13 @@ type ArticleParamsProps = {
 export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appState }: ArticleParamsProps) => {
 
 	const className = clsx(styles.container, active && styles.container_open);
-	const handleClick = (e: SyntheticEvent) => {
+
+	const submitClick = (e: SyntheticEvent) => {
 		e.preventDefault();
-		setAppState(appState)
 	};
+	const resetClick = () => {
+		setAppState(formState);
+	}
 
 	const [formState, setFormState] = useState(appState);
 	useEffect(() => setFormState(appState), [appState]);
@@ -36,7 +39,7 @@ export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appSt
 		<>
 			<ArrowButton onClick={() => setIsOpen((previous: boolean) => !previous)} active={active} />
 			<aside className={className} >
-				<form className={styles.form} >
+				<form className={styles.form} onSubmit={submitClick} onReset={resetClick}>
 					<Text as='h1' size={31} weight={800} uppercase>
 						{title}
 					</Text>
@@ -62,7 +65,7 @@ export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appSt
 						selected={formState.contentWidth}
 						onChange={(contentWidth) => setFormState({ ...formState, contentWidth })} />
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' />
+						<Button title='Сбросить' type='reset' onClick={() => setFormState(defaultArticleState)} />
 						<Button title='Применить' type='submit' onClick={() => setAppState(formState)} />
 					</div>
 				</form>
