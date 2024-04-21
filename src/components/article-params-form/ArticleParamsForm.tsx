@@ -9,37 +9,38 @@ import { Separator } from '../separator';
 import { clsx } from 'clsx';
 
 import styles from './ArticleParamsForm.module.scss';
-import { useLayoutEffect, useState } from 'react';
+import { useState, useRef } from 'react';
+import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 
 type ArticleParamsProps = {
 	title: string,
-	active: boolean,
-	setIsOpen: (callback: (previous: boolean) => boolean) => void,
-	// children: ReactNode;
 	setAppState: any
 	appState: AppState
 }
-//индикатор видимости, и функцию открыть/закрыть
 
+export const ArticleParamsForm = ({ title, setAppState, appState }: ArticleParamsProps) => {
+	const rootRef = useRef(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const className = clsx(styles.container, isOpen && styles.container_open);
 
-export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appState }: ArticleParamsProps) => {
-
-	const className = clsx(styles.container, active && styles.container_open);
 
 	const submitClick = (e: SyntheticEvent) => {
 		e.preventDefault();
 	};
+
 	const resetClick = () => {
 		setAppState(formState);
 	}
 
+	useOutsideClickClose({ isOpen, rootRef, onChange: setIsOpen });
+
 	const [formState, setFormState] = useState(appState);
 	useEffect(() => setFormState(appState), [appState]);
 	return (
-		<>
-			<ArrowButton onClick={() => setIsOpen((previous: boolean) => !previous)} active={active} />
+		<div ref={rootRef}>
+			<ArrowButton onClick={() => setIsOpen((previous: boolean) => !previous)} isOpen={isOpen} />
 			<aside className={className} >
-				<form className={styles.form} onSubmit={submitClick} onReset={resetClick}>
+				<form className={styles.form} onSubmit={submitClick} onReset={resetClick} >
 					<Text as='h1' size={31} weight={800} uppercase>
 						{title}
 					</Text>
@@ -70,7 +71,6 @@ export const ArticleParamsForm = ({ title, active, setIsOpen, setAppState, appSt
 					</div>
 				</form>
 			</aside>
-		</>
-
+		</div>
 	);
 };
