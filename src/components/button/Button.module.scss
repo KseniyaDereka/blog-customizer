@@ -8,6 +8,7 @@
 	text-align: center;
 	border: 1px solid #000000;
 	cursor: pointer;
+	background-color: white;
 }
 
 .button:active {
@@ -16,4 +17,14 @@
 
 .button:hover {
 	background: var(--gold, #ffc802);
+	--font-color:white;
 }
+
+.buttonSubmit{
+		background: var(--gold, #ffc802);
+	}
+
+.buttonSubmit:hover {
+		background: var(--gold, #FFEDAB);
+	}
+
